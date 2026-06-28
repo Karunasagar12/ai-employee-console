@@ -31,7 +31,10 @@ function showTab(tab) {
 
 function bindActions() {
   document.querySelectorAll('.chip[data-trigger]').forEach(chip => {
-    chip.addEventListener('click', () => submitIntake(chip.dataset.trigger));
+    chip.addEventListener('click', () => {
+      $('triggerInput').value = chip.dataset.trigger;
+      setProcessing('Ready');
+    });
   });
   document.querySelectorAll('.query-chip').forEach(chip => {
     chip.addEventListener('click', () => { $('brainQuery').value = chip.textContent; askBrain(); });
@@ -62,9 +65,10 @@ async function api(path, body) {
 }
 
 async function submitIntake(triggerOverride) {
-  const trigger = (triggerOverride || $('triggerInput').value).trim();
+  const hasOverride = typeof triggerOverride === 'string';
+  const trigger = (hasOverride ? triggerOverride : $('triggerInput').value).trim();
   if (!trigger) return;
-  if (triggerOverride) $('triggerInput').value = trigger;
+  if (hasOverride) $('triggerInput').value = trigger;
   setProcessing('Processing…');
   $('resultCard').classList.remove('empty');
   $('beats').innerHTML = ['PERCEIVE','REASON','ACT','HAND OFF'].map(b => `<div class="beat" data-beat="${b}">${b}</div>`).join('');
