@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Employee Console</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div id="appShell">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">AI Employee Console</div>
+        <h1>Cross-functional onboarding with a living company brain.</h1>
+      </div>
+      <div class="top-actions">
+        <button id="resetBrain" class="ghost danger">Reset brain</button>
+      </div>
+    </header>
+
+    <nav class="tabs" aria-label="Primary tabs">
+      <button class="tab active" data-tab="employees">Employees</button>
+      <button id="brainTab" class="tab" data-tab="brain">Company Brain <span id="brainBadge" class="tab-badge">0</span></button>
+    </nav>
+
+    <section class="metrics" aria-live="polite">
+      <div><b id="metricEmployees">0</b><span>employees onboarded</span></div>
+      <div><b id="metricAutonomy">0%</b><span>autonomy rate</span></div>
+      <div><b id="metricDecisions">0</b><span>decisions learned</span></div>
+    </section>
+
+    <main>
+      <section id="employeesPanel" class="panel active">
+        <div class="grid employees-grid">
+          <section class="card intake-card">
+            <div class="card-head">
+              <div>
+                <h2>New hire intake</h2>
+                <p>Paste a messy trigger or use a camera-safe preset.</p>
+              </div>
+              <span id="processingState" class="state-pill">Ready</span>
+            </div>
+            <div class="ops-map" aria-hidden="true">
+              <div class="ops-node">HR</div>
+              <div class="ops-line"></div>
+              <div class="ops-node">IT</div>
+              <div class="ops-line"></div>
+              <div class="ops-node">Finance</div>
+              <div class="ops-line learned-line"></div>
+              <div class="ops-node brain-lite">Brain</div>
+            </div>
+            <div class="chips">
+              <button class="chip" data-trigger="Priya Sharma joins as a Sales Engineer in Dubai, starts the 1st, reports to Karan.">Priya Sharma, Sales Engineer, Dubai</button>
+              <button class="chip" data-trigger="Omar Reyes joins as a Sales Engineer in Dubai, starts July 15, reports to Karan.">Omar Reyes, Sales Engineer, Dubai</button>
+              <button class="chip" data-trigger="James Chen joins as a Backend Engineer in San Francisco, starts Monday, reports to Maya.">James Chen, Backend Engineer, San Francisco</button>
+            </div>
+            <textarea id="triggerInput" rows="4" placeholder="Priya Sharma joins as a Sales Engineer in Dubai, starts the 1st, reports to Karan."></textarea>
+            <button id="submitIntake" class="primary">Run onboarding agent</button>
+          </section>
+
+          <section id="resultCard" class="card result-card empty">
+            <h2>Agent run</h2>
+            <p class="muted">Run an intake to watch the AI employee perceive, reason, act, and hand off only when needed.</p>
+            <div id="beats" class="beats"></div>
+            <div id="resultContent"></div>
+          </section>
+        </div>
+
+        <section class="card roster-card">
+          <div class="card-head"><h2>Roster</h2><p>Minimal HR-admin list for the current session.</p></div>
+          <div id="roster" class="roster empty-row">No employees onboarded yet.</div>
+        </section>
+      </section>
+
+      <section id="brainPanel" class="panel">
+        <section class="card brain-card">
+          <div class="card-head">
+            <div>
+              <h2>Company Brain</h2>
+              <p>Stored company judgment, grounded only in decisions humans have made.</p>
+            </div>
+          </div>
+      <div class="brain-subgrid">
+        <div class="mini-stat"><span>Persisted rules</span><b id="brainRuleCount">0</b></div>
+        <div class="mini-stat"><span>Departments covered</span><b id="brainDeptCount">0</b></div>
+        <div class="mini-stat"><span>Unresolved roles</span><b id="brainUnresolvedCount">1</b></div>
+      </div>
+      <div class="query-row">
+            <input id="brainQuery" placeholder="Ask what the company brain knows..." />
+            <button id="askBrain" class="primary neutral-primary">Ask</button>
+          </div>
+          <div class="chips query-chips">
+            <button class="chip query-chip">How do we classify Sales Engineers?</button>
+            <button class="chip query-chip">What access does a Dubai Sales hire get?</button>
+            <button class="chip query-chip">What has the brain learned so far?</button>
+          </div>
+          <div id="queryAnswer" class="answer-box">No question asked yet.</div>
+          <div class="network-wrap">
+            <svg id="brainNetwork" viewBox="0 0 860 360" role="img" aria-label="Company Brain learned decision network"></svg>
+            <div id="brainEmpty" class="brain-empty">No company decisions learned yet.<br/>Resolve an ambiguity to create the first rule.</div>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div id="animationLayer" aria-hidden="true"></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

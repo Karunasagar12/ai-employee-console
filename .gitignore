@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+data/company_brain.json
+.DS_Store
