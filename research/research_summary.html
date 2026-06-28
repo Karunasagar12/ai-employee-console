@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ops Pain-Signal Research</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      width: 100%;
+      min-height: 100%;
+      background: #080C18;
+      color: #F8FAFC;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+    }
+    body {
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #080C18;
+      background-image:
+        radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        radial-gradient(circle at 50% 8%, rgba(37,99,235,0.15), transparent 34%),
+        radial-gradient(circle at 85% 70%, rgba(37,99,235,0.08), transparent 30%);
+      background-size: 32px 32px, 100% 100%, 100% 100%;
+    }
+    .stage {
+      width: min(1690px, calc(100vw - 112px));
+      height: min(892px, calc(100vh - 96px));
+      display: grid;
+      grid-template-rows: 100px 1fr 60px;
+      gap: 32px;
+      position: relative;
+    }
+    .stage::before {
+      content: "";
+      position: absolute;
+      inset: -34px -40px;
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 32px;
+      pointer-events: none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03), 0 0 90px rgba(37,99,235,0.07);
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      position: relative;
+      z-index: 1;
+    }
+    .stat {
+      min-width: 0;
+      padding: 7px 0;
+      opacity: 0;
+      transform: scale(0.9);
+      animation: statReveal 560ms ease-out forwards;
+    }
+    .stat-1 { animation-delay: 200ms; }
+    .stat-2 { animation-delay: 350ms; }
+    .stat-3 { animation-delay: 500ms; }
+    .stat-4 { animation-delay: 650ms; }
+    .stat-number {
+      font-size: 60px;
+      line-height: 0.92;
+      letter-spacing: -0.06em;
+      font-weight: 760;
+      color: #2563EB;
+      text-shadow: 0 0 32px rgba(37, 99, 235, 0.3);
+      font-variant-numeric: tabular-nums;
+      margin-bottom: 10px;
+    }
+    .stat-label {
+      font-size: 14px;
+      line-height: 1.2;
+      font-weight: 560;
+      color: #64748B;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+    }
+    .stat-sublabel {
+      margin-top: 3px;
+      font-size: 12px;
+      line-height: 1.2;
+      font-weight: 560;
+      color: rgba(148, 163, 184, 0.72);
+    }
+    .bar-chart {
+      display: grid;
+      grid-template-rows: repeat(11, 52px);
+      gap: 0;
+      padding: 2px 0;
+      position: relative;
+      z-index: 1;
+    }
+    .bar-row {
+      display: grid;
+      grid-template-columns: minmax(315px, 410px) 164px minmax(280px, 1fr) 52px;
+      align-items: center;
+      gap: 20px;
+      min-height: 52px;
+      border-bottom: 1px solid rgba(255,255,255,0.045);
+      opacity: 0;
+      transform: translateX(-20px);
+      animation: rowReveal 520ms ease-out forwards;
+      animation-delay: var(--delay);
+    }
+    .bar-row:last-child { border-bottom: 0; }
+    .cluster-name {
+      min-width: 0;
+      color: #F8FAFC;
+      font-size: 14px;
+      line-height: 1.22;
+      font-weight: 650;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .dept-pill {
+      justify-self: start;
+      max-width: 164px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.1);
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      color: #93C5FD;
+      font-size: 11px;
+      line-height: 1;
+      font-weight: 650;
+      letter-spacing: 0.01em;
+    }
+    .bar-track {
+      width: 100%;
+      height: 10px;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.06);
+      overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.025);
+    }
+    .bar-fill {
+      width: var(--bar-width);
+      height: 100%;
+      border-radius: 5px;
+      background: #2563EB;
+      box-shadow: 0 0 12px rgba(37, 99, 235, 0.25);
+      transform-origin: left center;
+      transform: scaleX(0);
+      animation: barGrow 680ms ease-out forwards;
+      animation-delay: calc(var(--delay) + 90ms);
+    }
+    .bar-fill.top-three { box-shadow: 0 0 20px rgba(37, 99, 235, 0.35); }
+    .freq {
+      justify-self: end;
+      color: #F8FAFC;
+      font-size: 14px;
+      line-height: 1;
+      font-weight: 680;
+      font-variant-numeric: tabular-nums;
+      text-shadow: 0 0 18px rgba(37, 99, 235, 0.12);
+    }
+    .conclusion {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(8px);
+      animation: conclusionReveal 640ms ease-out forwards;
+      animation-delay: 2200ms;
+    }
+    .conclusion p {
+      margin: 0;
+      color: #F8FAFC;
+      font-size: 22px;
+      line-height: 1.25;
+      font-weight: 640;
+      letter-spacing: -0.025em;
+    }
+    .accent {
+      color: #2563EB;
+      text-shadow: 0 0 24px rgba(37, 99, 235, 0.3);
+    }
+    @keyframes statReveal {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes rowReveal {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes barGrow {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+    @keyframes conclusionReveal {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-height: 760px), (max-width: 1300px) {
+      .stage { width: calc(100vw - 72px); height: calc(100vh - 64px); grid-template-rows: 74px 1fr 44px; gap: 18px; }
+      .stat-number { font-size: 42px; margin-bottom: 6px; }
+      .stat-label { font-size: 11px; }
+      .stat-sublabel { font-size: 10px; }
+      .bar-chart { grid-template-rows: repeat(11, minmax(34px, 1fr)); }
+      .bar-row { min-height: 34px; grid-template-columns: minmax(230px, 330px) 120px minmax(180px, 1fr) 38px; gap: 12px; }
+      .cluster-name { font-size: 11px; }
+      .dept-pill { max-width: 120px; font-size: 9px; padding: 4px 8px; }
+      .bar-track { height: 7px; }
+      .freq { font-size: 11px; }
+      .conclusion p { font-size: 15px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" aria-label="Ops pain-signal research visual">
+    <section class="stats" aria-label="Research headline stats">
+      
+      <div class="stat stat-1">
+        <div class="stat-number">629</div>
+        <div class="stat-label">complaints scraped</div>
+        
+      </div>
+      <div class="stat stat-2">
+        <div class="stat-number">11</div>
+        <div class="stat-label">pain clusters identified</div>
+        
+      </div>
+      <div class="stat stat-3">
+        <div class="stat-number">10</div>
+        <div class="stat-label">sources scraped</div>
+        <div class="stat-sublabel">Reddit + Trustpilot</div>
+      </div>
+      <div class="stat stat-4">
+        <div class="stat-number">1</div>
+        <div class="stat-label">conclusion</div>
+        <div class="stat-sublabel">no process-level white space</div>
+      </div>
+    </section>
+
+    <section class="bar-chart" aria-label="Pain cluster frequency map">
+      
+      <div class="bar-row row-1" style="--delay:900ms; --bar-width:100.0%">
+        <div class="cluster-name">M365 permissions, mailbox, and user admin toil</div>
+        <div class="dept-pill">IT-Ops</div>
+        <div class="bar-track" aria-label="M365 permissions, mailbox, and user admin toil: 92">
+          <div class="bar-fill top-three"></div>
+        </div>
+        <div class="freq">92</div>
+      </div>
+      <div class="bar-row row-2" style="--delay:1000ms; --bar-width:75.0%">
+        <div class="cluster-name">Support-ticket loops for operational blockers</div>
+        <div class="dept-pill">CustomerSupport</div>
+        <div class="bar-track" aria-label="Support-ticket loops for operational blockers: 69">
+          <div class="bar-fill top-three"></div>
+        </div>
+        <div class="freq">69</div>
+      </div>
+      <div class="bar-row row-3" style="--delay:1100ms; --bar-width:72.83%">
+        <div class="cluster-name">Spreadsheet reporting and forecast stitching</div>
+        <div class="dept-pill">Accounting / Finance</div>
+        <div class="bar-track" aria-label="Spreadsheet reporting and forecast stitching: 67">
+          <div class="bar-fill top-three"></div>
+        </div>
+        <div class="freq">67</div>
+      </div>
+      <div class="bar-row row-4" style="--delay:1200ms; --bar-width:67.39%">
+        <div class="cluster-name">Supplier invoice portals block payments</div>
+        <div class="dept-pill">Procurement</div>
+        <div class="bar-track" aria-label="Supplier invoice portals block payments: 62">
+          <div class="bar-fill"></div>
+        </div>
+        <div class="freq">62</div>
+      </div>
+      <div class="bar-row row-5" style="--delay:1300ms; --bar-width:42.39%">
+        <div class="cluster-name">Bank-feed and statement reconciliation gaps</div>
+        <div class="dept-pill">Accounting</div>
+        <div class="bar-track" aria-label="Bank-feed and statement reconciliation gaps: 39">
+          <div class="bar-fill"></div>
+        </div>
+        <div class="freq">39</div>
+      </div>
+      <div class="bar-row row-6" style="--delay:1400ms; --bar-width:41.3%">
+        <div class="cluster-name">Manual close, ledger, journal, and rollforward work</div>
+        <div class="dept-pill">Accounting</div>
+        <div class="bar-track" aria-label="Manual close, ledger, journal, and rollforward work: 38">
+          <div class="bar-fill"></div>
+        </div>
+        <div class="freq">38</div>
+      </div>
+      <div class="bar-row row-7" style="--delay:1500ms; --bar-width:17.39%">
+        <div class="cluster-name">Manual data entry in bookkeeping operations</div>
+        <div class="dept-pill">Accounting</div>
+        <div class="bar-track" aria-label="Manual data entry in bookkeeping operations: 16">
+          <div class="bar-fill"></div>
+        </div>
+        <div class="freq">16</div>
+      </div>
+      <div class="bar-row row-8" style="--delay:1600ms; --bar-width:15.22%">
+        <div class="cluster-name">Brittle workflow automation and handoffs</div>
+        <div class="dept-pill">Accounting / Other / IT-Ops</div>
+        <div class="bar-track" aria-label="Brittle workflow automation and handoffs: 14">
+          <div class="bar-fill"></div>
+        </div>
+        <div class="freq">14</div>
+      </div>
+      <div class="bar-row row-9" style="--delay:1700ms; --bar-width:13.04%">
+        <div class="cluster-name">Slow, buggy enterprise systems block routine work</div>
+        <div class="dept-pill">IT-Ops</div>
+        <div class="bar-track" aria-label="Slow, buggy enterprise systems block routine work: 12">
+          <div class="bar-fill"></div>
+        </div>
+        <div class="freq">12</div>
+      </div>
+      <div class="bar-row row-10" style="--delay:1800ms; --bar-width:11.96%">
+        <div class="cluster-name">Manual invoice, receipt, and PO matching</div>
+        <div class="dept-pill">Accounting</div>
+        <div class="bar-track" aria-label="Manual invoice, receipt, and PO matching: 11">
+          <div class="bar-fill"></div>
+        </div>
+        <div class="freq">11</div>
+      </div>
+      <div class="bar-row row-11" style="--delay:1900ms; --bar-width:2.17%">
+        <div class="cluster-name">Compliance and access-data blind spots</div>
+        <div class="dept-pill">Compliance</div>
+        <div class="bar-track" aria-label="Compliance and access-data blind spots: 2">
+          <div class="bar-fill"></div>
+        </div>
+        <div class="freq">2</div>
+      </div>
+    </section>
+
+    <section class="conclusion" aria-label="Research conclusion">
+      <p>Every major ops pain point is already claimed. The white space isn't a process — <span class="accent">it's the knowledge layer beneath.</span></p>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,186 @@
+{
+  "metadata": {
+    "generated_at": "2026-06-28T11:55:53Z",
+    "checkpoint": "Checkpoint 2 — raw data through clustered output only",
+    "sources": [
+      "reddit",
+      "trustpilot"
+    ],
+    "g2_status": "skipped by user instruction",
+    "trustpilot_status": "reused existing 90 validation records; no re-pull",
+    "raw_records_count": 965,
+    "reddit_full_pull_raw_records": 651,
+    "reddit_validation_records_reused_before_filter": 224,
+    "trustpilot_records_reused": 90,
+    "records_after_keyword_and_exclusion_filter": 629,
+    "extracted_complaints_count": 422,
+    "cluster_count": 11,
+    "apify_spend_observed_usd": 4.3803,
+    "apify_budget_usd": 5,
+    "model_used_for_extraction_and_clustering": "configured GPT-5.5 endpoint / current Hermes model with deterministic post-processing",
+    "filtering_notes": {
+      "g2": "not run",
+      "trustpilot": "not re-pulled",
+      "reddit": "approved six subreddits only; career/venting exclusions and task-noun requirement applied"
+    }
+  },
+  "clusters": [
+    {
+      "cluster_name": "M365 permissions, mailbox, and user admin toil",
+      "description": "IT/MSP teams manually manage Microsoft 365 permissions, mailboxes, onboarding/offboarding, MFA resets, service health checks, and tenant administration.",
+      "frequency": 92,
+      "departments": [
+        "IT-Ops"
+      ],
+      "zamp_coverage": "UNCLAIMED",
+      "evidence": [
+        "added manually",
+        "manually reset them ourselves",
+        "Device provisioning, Microsoft AD management"
+      ]
+    },
+    {
+      "cluster_name": "Support-ticket loops for operational blockers",
+      "description": "Users cannot resolve payment, onboarding, platform, or configuration problems quickly because support is slow, unavailable, or pushes them through repeated tickets.",
+      "frequency": 69,
+      "departments": [
+        "CustomerSupport"
+      ],
+      "zamp_coverage": "CLAIMED_UNPROVEN",
+      "evidence": [
+        "Bad support Very bad customer service",
+        "Support staff are non existent",
+        "log about 4 tickets before I actually got a support agent"
+      ]
+    },
+    {
+      "cluster_name": "Spreadsheet reporting and forecast stitching",
+      "description": "Finance and FP&A teams manually stitch reports, forecasts, models, and spreadsheet packs across Excel, ERPs, and fragmented data sources.",
+      "frequency": 67,
+      "departments": [
+        "Accounting",
+        "Finance"
+      ],
+      "zamp_coverage": "CLAIMED_UNPROVEN",
+      "evidence": [
+        "manually stitching together data pieces",
+        "build these models by hand",
+        "MIS reporting file alone is around 30MB"
+      ]
+    },
+    {
+      "cluster_name": "Supplier invoice portals block payments",
+      "description": "Vendors and operators struggle with Coupa, Ariba, BILL, and similar portals for invoice submission, supplier onboarding, payment status, and getting paid.",
+      "frequency": 62,
+      "departments": [
+        "Procurement"
+      ],
+      "zamp_coverage": "MATURE",
+      "evidence": [
+        "processing payments to suppliers",
+        "trying to get Coupa to submit my first invoice",
+        "I am not getting paid"
+      ]
+    },
+    {
+      "cluster_name": "Bank-feed and statement reconciliation gaps",
+      "description": "Bookkeeping and accounting users do not trust bank feeds, card statements, or statement imports and still reconcile transactions manually.",
+      "frequency": 39,
+      "departments": [
+        "Accounting"
+      ],
+      "zamp_coverage": "MATURE",
+      "evidence": [
+        "bank feeds matching in QuickBooks",
+        "avoid double-counting transactions from the bank feeds",
+        "the data never reconciles at a global"
+      ]
+    },
+    {
+      "cluster_name": "Manual close, ledger, journal, and rollforward work",
+      "description": "Accounting teams still perform month-end close, ledger cleanup, journal entries, provisions, and rollforwards through recurring manual work.",
+      "frequency": 38,
+      "departments": [
+        "Accounting"
+      ],
+      "zamp_coverage": "MATURE",
+      "evidence": [
+        "manual journal entries",
+        "year-end close and tax prep",
+        "record my journal entries from the general ledger"
+      ]
+    },
+    {
+      "cluster_name": "Manual data entry in bookkeeping operations",
+      "description": "Bookkeepers and operators still enter invoices, inventory, item statements, chart-of-account changes, and transaction details by hand.",
+      "frequency": 16,
+      "departments": [
+        "Accounting"
+      ],
+      "zamp_coverage": "MATURE",
+      "evidence": [
+        "spend so much time on data entry",
+        "manual process",
+        "chart of accounts"
+      ]
+    },
+    {
+      "cluster_name": "Brittle workflow automation and handoffs",
+      "description": "Automation users describe workflows that still require manual handoffs, fragmented tools, brittle scripts, or human follow-up to close the loop.",
+      "frequency": 14,
+      "departments": [
+        "Accounting",
+        "Other",
+        "IT-Ops"
+      ],
+      "zamp_coverage": "CLAIMED_UNPROVEN",
+      "evidence": [
+        "Automation should close loops automatically",
+        "No human follow-up required",
+        "automate away all of the manual steps"
+      ]
+    },
+    {
+      "cluster_name": "Slow, buggy enterprise systems block routine work",
+      "description": "Users complain that enterprise platforms are slow, unintuitive, unstable, or buggy enough to block routine operational tasks.",
+      "frequency": 12,
+      "departments": [
+        "IT-Ops"
+      ],
+      "zamp_coverage": "CLAIMED_UNPROVEN",
+      "evidence": [
+        "incredibly slow, unintuitive, consistently bugged",
+        "Worst user experience ever",
+        "slow and absolutely loaded with bugs"
+      ]
+    },
+    {
+      "cluster_name": "Manual invoice, receipt, and PO matching",
+      "description": "Accounting and procurement users still match invoices, receipts, purchase orders, and supporting documents manually or with brittle OCR/workarounds.",
+      "frequency": 11,
+      "departments": [
+        "Accounting"
+      ],
+      "zamp_coverage": "MATURE",
+      "evidence": [
+        "2/3 way matching invoices and purchase orders",
+        "matching receipts to invoices",
+        "PDF invoices in email"
+      ]
+    },
+    {
+      "cluster_name": "Compliance and access-data blind spots",
+      "description": "Teams lack reliable controls for operational compliance data such as contact records, access state, audit trails, DLP criteria, and incident reporting thresholds.",
+      "frequency": 2,
+      "departments": [
+        "Compliance"
+      ],
+      "zamp_coverage": "CLAIMED_UNPROVEN",
+      "evidence": [
+        "nobody checks the phone numbers",
+        "contact data on advisors phones",
+        "Why dlp sucks"
+      ]
+    }
+  ]
+}
