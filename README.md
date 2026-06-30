@@ -115,6 +115,14 @@ That's what led to the company brain thesis. The full research is in [`/research
 
 <br>
 
+## 🧩 Full-Stack Workbench
+
+This repo is the focused thesis demo. The expanded full-stack product version lives here:
+
+**[Company Brain Workbench](https://github.com/Karunasagar12/company-brain-workbench)** — approvals, audit trail, learned rules, and the Priya → Omar guided workflow in a production-style app shell.
+
+<br>
+
 ## 💡 The Company Brain Thesis
 
 Every time a human resolves an ambiguity an AI employee couldn't handle, that judgment becomes structured memory: what happened, what context mattered, what was decided, and when it should apply again.
